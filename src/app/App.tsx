@@ -43,7 +43,7 @@ export default function App() {
           </h1>
           
           <p className="text-xl md:text-2xl text-[#99926b] mb-8" style={{ fontFamily: 'Poppins, sans-serif' }}>
-            Te invitamos a celebrar su llegada
+            Te inivitamos a celebrar su llegada
           </p>
 
           {/* Decorative divider */}
@@ -96,7 +96,7 @@ export default function App() {
                       31 de enero de 2026
                     </p>
                     <p className="text-gray-700" style={{ fontFamily: 'Poppins, sans-serif' }}>
-                      5:30 PM
+                      4:00 PM
                     </p>
                   </div>
                 </div>
@@ -113,7 +113,7 @@ export default function App() {
                       Lugar
                     </h3>
                     <p className="text-gray-700" style={{ fontFamily: 'Poppins, sans-serif' }}>
-                      Calle Valmore Roncolla 255
+                      Calle Dr. Cayetano Valmore Roncalla 225
                     </p>
                     <p className="text-gray-700 mb-4" style={{ fontFamily: 'Poppins, sans-serif' }}>
                       San Isidro
@@ -122,7 +122,7 @@ export default function App() {
                   </div>
                 </div>
                  <a
-                      href="https://www.google.com/maps/search/?api=1&query=Calle+Valmore+Roncolla+255+San+Isidro+Lima+Peru"
+                      href="https://maps.app.goo.gl/1Ty3R3StsPvpvkxt8"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex items-center justify-center gap-2 w-full bg-[#99926b] hover:bg-[#af732f] text-white px-4 py-2 rounded-lg transition-colors shadow-md"
@@ -136,12 +136,14 @@ export default function App() {
 
             {/* Baby Name Highlight */}
             <div className="text-center p-8">
-              <p className="text-lg text-[#99926b] mb-3" style={{ fontFamily: 'Poppins, sans-serif' }}>
-                Esperamos con amor a
-              </p>
-              <h3 className="text-5xl md:text-6xl text-[#bd7b6a] mb-3" style={{ fontFamily: 'Dancing Script, cursive' }}>
-                Miranda
-              </h3>
+              <p className="text-2xl text-[#99926b] mb-3" style={{ fontFamily: 'Poppins, sans-serif' }}>
+  Esperamos con amor a
+</p>
+
+<h3 className="text-7xl md:text-8xl text-[#bd7b6a] mb-3" style={{ fontFamily: 'Dancing Script, cursive' }}>
+  Miranda
+</h3>
+
               <div className="flex justify-center gap-2 mt-4">
                 <Heart className="w-5 h-5 text-[#bd7b6a] fill-[#bd7b6a]" />
                 <Heart className="w-5 h-5 text-[#af732f] fill-[#af732f]" />
