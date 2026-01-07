@@ -9,15 +9,21 @@ export default function App() {
   return (
     <div className="min-h-screen relative">
       {/* Fixed Background */}
-      <div 
-        className="fixed inset-0 -z-10 bg-cover bg-center bg-no-repeat"
-        style={{ 
+      <div
+        className="
+          fixed inset-0 -z-10
+          bg-no-repeat
+          bg-cover
+          bg-[position:50%_20%]
+          md:bg-center
+          md:bg-fixed
+        "
+        style={{
           backgroundImage: `url(${backgroundImage})`,
-          backgroundAttachment: 'fixed'
         }}
       >
-        {/* Overlay for better readability */}
-        <div className="absolute inset-0 bg-white/60"></div>
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-white/60" />
       </div>
 
       {/* Scrollable Content */}
