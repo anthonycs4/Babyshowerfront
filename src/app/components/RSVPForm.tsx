@@ -5,16 +5,21 @@ interface RSVPData {
   name: string;
   guests: number;
   confirmed: boolean;
+  createdAt?: string; // opcional si tu API lo devuelve
 }
+
+const API_BASE = 'https://baby-shower-back-production.up.railway.app';
 
 export function RSVPForm() {
   const [name, setName] = useState('');
-  const [guests, setGuests] = useState(0);
+  const [guests, setGuests] = useState<number>(0);
   const [submitted, setSubmitted] = useState(false);
   const [savedRSVP, setSavedRSVP] = useState<RSVPData | null>(null);
 
+  const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
   useEffect(() => {
-    // Cargar RSVP guardado
     const saved = localStorage.getItem('babyShowerRSVP');
     if (saved) {
       const rsvpData = JSON.parse(saved) as RSVPData;
@@ -25,19 +30,53 @@ export function RSVPForm() {
     }
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (name.trim()) {
+    setErrorMsg(null);
+
+    const fullName = name.trim();
+    if (!fullName) return;
+
+    try {
+      setLoading(true);
+
+      const res = await fetch(`${API_BASE}/rsvp`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        // tu API espera fullName y companionsCount
+        body: JSON.stringify({
+          fullName,
+          companionsCount: Number(guests) || 0,
+        }),
+      });
+
+      // Si tu backend devuelve errores con JSON
+      if (!res.ok) {
+        let detail = '';
+        try {
+          const errJson = await res.json();
+          detail = errJson?.message ? `: ${errJson.message}` : '';
+        } catch {}
+        throw new Error(`Error ${res.status}${detail}`);
+      }
+
+      // Si tu API retorna algo, lo puedes leer:
+      // const data = await res.json();
+      // pero si no retorna nada, no pasa nada.
+
       const rsvpData: RSVPData = {
-        name: name.trim(),
-        guests,
-        confirmed: true
+        name: fullName,
+        guests: Number(guests) || 0,
+        confirmed: true,
       };
-      
+
       localStorage.setItem('babyShowerRSVP', JSON.stringify(rsvpData));
       setSavedRSVP(rsvpData);
       setSubmitted(true);
+    } catch (err: any) {
+      setErrorMsg(err?.message || 'No se pudo confirmar. Intenta nuevamente.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -45,6 +84,8 @@ export function RSVPForm() {
     setSubmitted(false);
     setName('');
     setGuests(0);
+    setSavedRSVP(null);
+    setErrorMsg(null);
     localStorage.removeItem('babyShowerRSVP');
   };
 
@@ -59,8 +100,8 @@ export function RSVPForm() {
           <strong>{savedRSVP.name}</strong>
         </p>
         <p className="text-gray-600 mb-4" style={{ fontFamily: 'Poppins, sans-serif' }}>
-          {savedRSVP.guests === 0 
-            ? 'Asistirás solo/a' 
+          {savedRSVP.guests === 0
+            ? 'Asistirás solo/a'
             : `Asistirás con ${savedRSVP.guests} acompañante${savedRSVP.guests > 1 ? 's' : ''}`}
         </p>
         <button
@@ -86,67 +127,55 @@ export function RSVPForm() {
         </p>
       </div>
 
-      {submitted ? (
-        <div className="text-center py-8 bg-gradient-to-br from-[#f5ede9] to-white rounded-2xl border-2 border-[#bd7b6a]">
-          <div className="mb-4">
-            <Heart className="w-16 h-16 text-[#af732f] fill-[#af732f] mx-auto animate-bounce" />
-          </div>
-          <h3 className="text-2xl md:text-3xl text-[#bd7b6a] mb-3" style={{ fontFamily: 'Dancing Script, cursive' }}>
-            ¡Gracias por confirmar!
-          </h3>
-          <p className="text-lg text-[#99926b] mb-6" style={{ fontFamily: 'Poppins, sans-serif' }}>
-            Te esperamos el 31 de enero
-          </p>
-          <button
-            onClick={handleReset}
-            className="bg-gradient-to-r from-[#bd7b6a] to-[#af732f] text-white px-6 py-2 rounded-full hover:from-[#a66959] hover:to-[#9a6229] transition-all transform hover:scale-105"
-            style={{ fontFamily: 'Poppins, sans-serif' }}
-          >
-            Editar confirmación
-          </button>
+      {errorMsg && (
+        <div className="mb-6 p-4 rounded-xl border-2 border-red-300 bg-red-50 text-red-700">
+          {errorMsg}
         </div>
-      ) : (
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <label className="block text-[#99926b] mb-2" style={{ fontFamily: 'Poppins, sans-serif' }}>
-              Tu nombre
-            </label>
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border-2 border-[#bd7b6a] focus:outline-none focus:ring-2 focus:ring-[#af732f] focus:border-transparent transition-all"
-              placeholder="Nombre completo"
-              style={{ fontFamily: 'Poppins, sans-serif' }}
-              required
-            />
-          </div>
-
-          <div>
-            <label className="block text-[#99926b] mb-2" style={{ fontFamily: 'Poppins, sans-serif' }}>
-              Número de acompañantes
-            </label>
-            <input
-              type="number"
-              value={guests}
-              onChange={(e) => setGuests(e.target.value)}
-              min="0"
-              max="10"
-              className="w-full px-4 py-3 rounded-xl border-2 border-[#99926b] focus:outline-none focus:ring-2 focus:ring-[#af732f] focus:border-transparent transition-all"
-              style={{ fontFamily: 'Poppins, sans-serif' }}
-            />
-          </div>
-
-          <button
-            type="submit"
-            className="w-full bg-gradient-to-r from-[#bd7b6a] via-[#af732f] to-[#99926b] text-white py-4 rounded-xl hover:from-[#a66959] hover:via-[#9a6229] hover:to-[#87825c] transition-all transform hover:scale-105 shadow-lg flex items-center justify-center gap-2"
-            style={{ fontFamily: 'Poppins, sans-serif' }}
-          >
-            <Send className="w-5 h-5" />
-            Confirmar Asistencia
-          </button>
-        </form>
       )}
+
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <div>
+          <label className="block text-[#99926b] mb-2" style={{ fontFamily: 'Poppins, sans-serif' }}>
+            Tu nombre
+          </label>
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="w-full px-4 py-3 rounded-xl border-2 border-[#bd7b6a] focus:outline-none focus:ring-2 focus:ring-[#af732f] focus:border-transparent transition-all"
+            placeholder="Nombre completo"
+            style={{ fontFamily: 'Poppins, sans-serif' }}
+            required
+            disabled={loading}
+          />
+        </div>
+
+        <div>
+          <label className="block text-[#99926b] mb-2" style={{ fontFamily: 'Poppins, sans-serif' }}>
+            Número de acompañantes
+          </label>
+          <input
+            type="number"
+            value={guests}
+            onChange={(e) => setGuests(Number(e.target.value))}
+            min={0}
+            max={10}
+            className="w-full px-4 py-3 rounded-xl border-2 border-[#99926b] focus:outline-none focus:ring-2 focus:ring-[#af732f] focus:border-transparent transition-all"
+            style={{ fontFamily: 'Poppins, sans-serif' }}
+            disabled={loading}
+          />
+        </div>
+
+        <button
+          type="submit"
+          className="w-full bg-gradient-to-r from-[#bd7b6a] via-[#af732f] to-[#99926b] text-white py-4 rounded-xl hover:from-[#a66959] hover:via-[#9a6229] hover:to-[#87825c] transition-all transform hover:scale-105 shadow-lg flex items-center justify-center gap-2 disabled:opacity-60 disabled:hover:scale-100"
+          style={{ fontFamily: 'Poppins, sans-serif' }}
+          disabled={loading}
+        >
+          <Send className="w-5 h-5" />
+          {loading ? 'Confirmando...' : 'Confirmar Asistencia'}
+        </button>
+      </form>
     </div>
   );
 }

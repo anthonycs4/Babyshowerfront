@@ -3,7 +3,7 @@ import { Countdown } from './components/Countdown';
 import { RSVPForm } from './components/RSVPForm';
 import { GiftRegistry } from './components/GiftRegistry';
 import { Gallery } from './components/Gallery';
-import backgroundImage from 'figma:asset/70e4977e4c4a30c06a351c1c8fa6d0a0194cbce6.png';
+import backgroundImage from "../assets/bg.png";
 
 export default function App() {
   return (
@@ -168,11 +168,11 @@ export default function App() {
       </section>
 
       {/* Gallery Section */}
-      <section className="py-16 px-4">
+      {/* <section className="py-16 px-4">
         <div className="max-w-6xl mx-auto">
           <Gallery />
         </div>
-      </section>
+      </section> */}
       </div>
     </div>
   );

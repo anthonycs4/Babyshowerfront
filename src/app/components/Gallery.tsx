@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import { X, Camera } from 'lucide-react';
-import babyShowerDecor from 'figma:asset/70e4977e4c4a30c06a351c1c8fa6d0a0194cbce6.png';
+import babyShowerDecor from '../../assets/bg.png';
 
 const galleryImages = [
   {
