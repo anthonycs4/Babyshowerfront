@@ -104,13 +104,13 @@ export function RSVPForm() {
             ? 'Asistirás solo/a'
             : `Asistirás con ${savedRSVP.guests} acompañante${savedRSVP.guests > 1 ? 's' : ''}`}
         </p>
-        <button
+        {/* <button
           onClick={handleReset}
           className="px-6 py-2 bg-green-500 text-white rounded-full hover:bg-green-600 transition-colors"
           style={{ fontFamily: 'Poppins, sans-serif' }}
         >
           Editar confirmación
-        </button>
+        </button> */}
       </div>
     );
   }
