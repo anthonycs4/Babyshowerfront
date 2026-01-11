@@ -43,8 +43,8 @@ export default function App() {
           </h1>
           
           <p className="text-xl md:text-2xl text-[#99926b] mb-8" style={{ fontFamily: 'Poppins, sans-serif' }}>
-            Te inivitamos a celebrar su llegada
-          </p>
+Nuestra hadita está en camino, 
+te invitamos a celebrar su llegada con amor y alegría          </p>
 
           {/* Decorative divider */}
           <div className="flex items-center justify-center gap-4 my-8">
