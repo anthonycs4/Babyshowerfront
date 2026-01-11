@@ -100,6 +100,16 @@ te invitamos a celebrar su llegada con amor y alegría          </p>
                     </p>
                   </div>
                 </div>
+                <a
+                      href="https://calendar.google.com/calendar/render?action=TEMPLATE&dates=20260131T210000Z%2F20260201T033000Z&details=&location=Calle%20Dr.%20Cayetano%20Valmore%20Roncalla%20225%20%20San%20Isidro&text=Baby%20Shower%20Miranda"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center gap-2 w-full bg-[#99926b] hover:bg-[#af732f] text-white px-4 py-2 rounded-lg transition-colors shadow-md"
+                      style={{ fontFamily: 'Poppins, sans-serif' }}
+                    >
+                      
+                      Agendar
+                    </a>
               </div>
 
               {/* Location */}
